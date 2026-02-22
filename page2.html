@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            font-family: 'Fredoka', sans-serif;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* Title */
+        .page-title {
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        /* Falling roses animation */
+        .roses-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .rose {
+            position: absolute;
+            font-size: 2rem;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Floating hearts background */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.3);
+            font-size: 1.5rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+        }
+
+        /* Envelopes Container */
+        .envelopes-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            size: 100%;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        /* Envelope Image Button */
+        .envelope-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .envelope-btn img {
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 8px 20px rgba(255, 105, 180, 0.4));
+            transition: all 0.3s ease;
+        }
+
+        .envelope-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .envelope-btn:hover img {
+            filter: drop-shadow(0 12px 30px rgba(255, 105, 180, 0.6));
+            transform: rotate(-5deg);
+        }
+
+        .envelope-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Click animation */
+        .envelope-btn.clicked {
+            animation: envelopeClick 0.5s ease;
+        }
+
+        @keyframes envelopeClick {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(0.9) rotate(10deg);
+            }
+            60% {
+                transform: scale(1.05) rotate(-5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: sparkle 0.8s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.4rem;
+            }
+            
+            .envelopes-container {
+                gap: 20px;
+            }
+            
+            .envelope-btn img {
+                width: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-bg" id="heartsBg"></div>
+    
+    <!-- Falling Roses -->
+    <div class="roses-container" id="rosesContainer"></div>
+
+    <!-- Title -->
+    <h1 class="page-title">❤️ CHOOSE ONE ❤️</h1>
+    <p class="page-subtitle">Pick your special message...</p>
+
+    <!-- Envelopes -->
+    <div class="envelopes-container">
+        <!-- Envelope 1 -->
+        <button class="envelope-btn" onclick="openEnvelope(1, this)">
+            <img src="image/vecteezy_pink-love-letter-envelope_28078408.png" alt="Envelope 1">
+        </button>
+
+        <!-- Envelope 2 -->
+        <button class="envelope-btn" onclick="openEnvelope(2, this)">
+            <img src="image/vecteezy_pink-love-letter-envelope_28078408.png" alt="Envelope 2">
+        </button>
+
+        <!-- Envelope 3 -->
+        <button class="envelope-btn" onclick="openEnvelope(3, this)">
+            <img src="image/vecteezy_pink-love-letter-envelope_28078408.png" alt="Envelope 3">
+        </button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const rosesContainer = document.getElementById('rosesContainer');
+        const heartsBg = document.getElementById('heartsBg');
+
+        // Messages for each envelope
+        const envelopeMessages = {
+            1: "My dearest love,\n\nYou are my everything. Every moment with you is a treasure. I love you more than words can express.\n\nForever yours,\n❤️",
+            2: "🎁 My gift to you:\n\nMy heart, my love, my devotion. Everything I am belongs to you. You are the best thing that ever happened to me!\n\n❤️",
+            3: "💕 Sweet Messages:\n\n• You make me smile\n• You are my sunshine\n• I love you\n• You're amazing\n• My heart belongs to you\n\n❤️"
+        };
+
+        // Create floating hearts in background
+        function createHearts() {
+            const heartSymbols = ['💕', '💗', '❤️', '💖', '💘', '💞'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heart.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
+                heartsBg.appendChild(heart);
+            }
+        }
+
+        // Create falling roses
+        function createRoses() {
+            const roseSymbols = ['🌹', '🥀', '💐', '🌸', '💮'];
+            
+            // Create initial roses
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => createRose(roseSymbols), i * 300);
+            }
+            
+            // Continuously create new roses
+            setInterval(() => {
+                createRose(roseSymbols);
+            }, 800);
+        }
+
+        function createRose(roseSymbols) {
+            const rose = document.createElement('div');
+            rose.className = 'rose';
+            rose.innerHTML = roseSymbols[Math.floor(Math.random() * roseSymbols.length)];
+            rose.style.left = Math.random() * 100 + '%';
+            rose.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            rosesContainer.appendChild(rose);
+            
+            // Remove rose after animation completes
+            setTimeout(() => {
+                rose.remove();
+            }, 8000);
+        }
+
+        // Create sparkle effect
+        function createSparkles(button) {
+            const rect = button.getBoundingClientRect();
+            const sparkleSymbols = ['✨', '💫', '⭐', '🌟'];
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.innerHTML = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
+                    sparkle.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+                    sparkle.style.left = (rect.left + rect.width/2 + (Math.random() * 100 - 50)) + 'px';
+                    sparkle.style.top = (rect.top + rect.height/2 + (Math.random() * 100 - 50)) + 'px';
+                    sparkle.style.position = 'fixed';
+                    sparkle.style.color = '#FFD700';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 800);
+                }, i * 50);
+            }
+        }
+
+        // Open envelope function
+        function openEnvelope(num, button) {
+            // Add click animation
+            button.classList.add('clicked');
+            setTimeout(() => button.classList.remove('clicked'), 500);
+            
+            // Create sparkle effect
+            createSparkles(button);
+            
+            // Create celebration roses
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const roseSymbols = ['🌹', '💕', '❤️', '💖', '💗'];
+                    createRose(roseSymbols);
+                }, i * 100);
+            }
+            
+            // Show the message
+            setTimeout(() => {
+                alert(envelopeMessages[num]);
+            }, 300);
+        }
+
+        // Initialize
+        createHearts();
+        createRoses();
+    </script>
+</body>
+</html>
